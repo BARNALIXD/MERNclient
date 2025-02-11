@@ -1,17 +1,18 @@
-import { Input } from "postcss";
+import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Select } from "@radix-ui/react-select";
-import { Textarea } from "../ui/textarea";
 import {
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Textarea } from "../ui/textarea";
 
 function FormControls({ formControls = [], formData, setFormData }) {
   function renderComponentByType(getControlItem) {
     let element = null;
+
 
     switch (getControlItem.componentType) {
       case "input":
@@ -59,21 +60,28 @@ function FormControls({ formControls = [], formData, setFormData }) {
           type={getControlItem.type}
         />
     );
-      
-        break;
+      break;
     }
+
+    return element;
+
   }
 
   return (
     <div className="flex flex-col gap-3">
-      formControls.map(controleItem=>
+      {formControls.map((controleItem) => (
       <div key={controleItem.name}>
         <Label htmlFor={controleItem.name}>{controleItem.label}</Label>
         {renderComponentByType(controleItem)}
       </div>
-      )
+      ))}
     </div>
   );
 }
 
 export default FormControls;
+
+
+
+
+
