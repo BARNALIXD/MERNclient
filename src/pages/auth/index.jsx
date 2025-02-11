@@ -21,6 +21,23 @@ function Authpage() {
     setActiveTab(value);
   }
 
+  function checkIfSignInFormIsValid() {
+    return (
+      signInFormData &&
+      signInFormData.userEmail !== "" &&
+      signInFormData.password !== ""
+    );
+  }
+
+  function checkIfSignUpFormIsValid() {
+    return (
+      signUpFormData &&
+      signUpFormData.userName !== "" &&
+      signUpFormData.userEmail !== "" &&
+      signUpFormData.password !== ""
+    );
+  }
+
   console.log(signInFormData);
 
   return (
@@ -56,6 +73,7 @@ function Authpage() {
                 buttonText={'Sign In'}
                 formData={signInFormData}
                 setFormData={setSignInFormData}
+                isButtonDisabled = {!checkIfSignInFormIsValid()}
                 />
             </CardContent>
            </Card>
@@ -74,6 +92,7 @@ function Authpage() {
                 buttonText={'Sign Up'}
                 formData={signUpFormData}
                 setFormData={setSignUpFormData}
+                isButtonDisabled = {!checkIfSignUpFormIsValid()}
                 />
             </CardContent>
            </Card>
