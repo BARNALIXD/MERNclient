@@ -1,4 +1,5 @@
 import CommonForm from "@/components/common-form";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { signInFormControls, signUpFormControls } from "@/config";
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";
@@ -33,7 +34,20 @@ function Authpage() {
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
-           <CommonForm formControls={signInFormControls}/>
+           <Card className="p-6 space-y-4">
+            <CardHeader>
+                <CardTitle>Sign in to your account</CardTitle>
+                <CardDescription>
+                    enter your email and password to access your account
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+                <CommonForm
+                formControls={signInFormControls}
+                buttonText={'Sign In'}
+                />
+            </CardContent>
+           </Card>
           </TabsContent>
           <TabsContent value="signup">
             <CommonForm formControls={signUpFormControls}/>
