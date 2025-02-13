@@ -5,6 +5,7 @@ import StudentViewCommonLayout from "./components/student-view/common-layout";
 import { AuthContext } from "./context/auth-context";
 import Authpage from "./pages/auth";
 import InstructorDashboardpage from "./pages/instructor";
+import NotFoundPage from "./pages/not-found";
 import StudentHomePage from "./pages/student/home";
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="" element={<StudentHomePage />} />
         <Route path="home" element={<StudentHomePage />} />
       </Route>
+      <Route path="*" element={<NotFoundPage/>}/>
     </Routes>
   );
 }
