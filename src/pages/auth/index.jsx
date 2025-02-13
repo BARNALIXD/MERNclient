@@ -1,14 +1,19 @@
 import CommonForm from "@/components/common-form";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { signInFormControls, signUpFormControls } from "@/config";
 import { AuthContext } from "@/context/auth-context";
-import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 import { GraduationCap } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-function Authpage() {
+function AuthPage() {
   const [activeTab, setActiveTab] = useState("signin");
   const {
     signInFormData,
@@ -17,7 +22,7 @@ function Authpage() {
     setSignUpFormData,
     handleRegisterUser,
     handleLoginUser,
- } = useContext(AuthContext);
+  } = useContext(AuthContext);
 
   function handleTabChange(value) {
     setActiveTab(value);
@@ -62,44 +67,44 @@ function Authpage() {
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
-           <Card className="p-6 space-y-4">
-            <CardHeader>
+            <Card className="p-6 space-y-4">
+              <CardHeader>
                 <CardTitle>Sign in to your account</CardTitle>
                 <CardDescription>
-                    Enter your email and password to access your account
+                  Enter your email and password to access your account
                 </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
+              </CardHeader>
+              <CardContent className="space-y-2">
                 <CommonForm
-                formControls={signInFormControls}
-                buttonText={'Sign In'}
-                formData={signInFormData}
-                setFormData={setSignInFormData}
-                isButtonDisabled = {!checkIfSignInFormIsValid()}
-                handleSubmit={handleLoginUser}
+                  formControls={signInFormControls}
+                  buttonText={"Sign In"}
+                  formData={signInFormData}
+                  setFormData={setSignInFormData}
+                  isButtonDisabled={!checkIfSignInFormIsValid()}
+                  handleSubmit={handleLoginUser}
                 />
-            </CardContent>
-           </Card>
+              </CardContent>
+            </Card>
           </TabsContent>
           <TabsContent value="signup">
-          <Card className="p-6 space-y-4">
-            <CardHeader>
+            <Card className="p-6 space-y-4">
+              <CardHeader>
                 <CardTitle>Create a new account</CardTitle>
                 <CardDescription>
-                    Enter your details to get started.
+                  Enter your details to get started
                 </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
+              </CardHeader>
+              <CardContent className="space-y-2">
                 <CommonForm
-                formControls={signUpFormControls}
-                buttonText={'Sign Up'}
-                formData={signUpFormData}
-                setFormData={setSignUpFormData}
-                isButtonDisabled = {!checkIfSignUpFormIsValid()}
-                handleSubmit={handleRegisterUser}
+                  formControls={signUpFormControls}
+                  buttonText={"Sign Up"}
+                  formData={signUpFormData}
+                  setFormData={setSignUpFormData}
+                  isButtonDisabled={!checkIfSignUpFormIsValid()}
+                  handleSubmit={handleRegisterUser}
                 />
-            </CardContent>
-           </Card>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
@@ -107,4 +112,4 @@ function Authpage() {
   );
 }
 
-export default Authpage;
+export default AuthPage;

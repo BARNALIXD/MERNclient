@@ -1,7 +1,7 @@
-import {Navigate, useLocation} from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { Fragment } from "react";
 
-function RouteGaurd({ authenticated, user, element }) {
+function RouteGuard({ authenticated, user, element }) {
   const location = useLocation();
 
   console.log(authenticated, user, "useruser");
@@ -14,7 +14,7 @@ function RouteGaurd({ authenticated, user, element }) {
     authenticated &&
     user?.role !== "instructor" &&
     (location.pathname.includes("instructor") ||
-     location.pathname.includes("/auth"))
+      location.pathname.includes("/auth"))
   ) {
     return <Navigate to="/home" />;
   }
@@ -30,4 +30,4 @@ function RouteGaurd({ authenticated, user, element }) {
   return <Fragment>{element}</Fragment>;
 }
 
-export default RouteGaurd;
+export default RouteGuard;

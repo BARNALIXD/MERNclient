@@ -17,7 +17,7 @@ function App() {
         element={
           <RouteGaurd
             element={<Authpage />}
-            authenticated={auth?.authenticated}
+            authenticated={auth?.authenticate}
             user={auth?.user}
           />
         }
@@ -27,7 +27,7 @@ function App() {
         element={
           <RouteGaurd
             element={<InstructorDashboardpage />}
-            authenticated={auth?.authenticated}
+            authenticated={auth?.authenticate}
             user={auth?.user}
           />
         }
@@ -37,7 +37,7 @@ function App() {
         element={
           <RouteGaurd
             element={<StudentViewCommonLayout />}
-            authenticated={auth?.authenticated}
+            authenticated={auth?.authenticate}
             user={auth?.user}
           />
         }
