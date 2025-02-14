@@ -2,11 +2,13 @@ import InstructorCourses from "@/components/instructor-view/courses";
 import InstructorDashboard from "@/components/instructor-view/dashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { AuthContext } from "@/context/auth-context";
 import { BarChart, Book, LogOut } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 function InstructorDashboardpage() {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const {resetCredentials} = useContext(AuthContext)
 
   const menuItems = [
     {
@@ -29,7 +31,10 @@ function InstructorDashboardpage() {
     },
   ];
 
-  function handleLogout() {}
+  function handleLogout() {
+    resetCredentials()
+    sessionStorage.clear();
+  }
 
   return (
     <div className="flex h-full min-h-screen bg-gray-100">
