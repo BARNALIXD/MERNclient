@@ -1,6 +1,7 @@
 import InstructorCourses from "@/components/instructor-view/courses";
 import InstructorDashboard from "@/components/instructor-view/dashboard";
-import { BarChart, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BarChart,Book, LogOut } from "lucide-react";
 
 function InstructorDashboardpage() {
   const menuItems = [
@@ -30,9 +31,12 @@ function InstructorDashboardpage() {
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-4">Instructor View</h2>
           <nav>
-            {
-                menuItems.map()
-            }
+            {menuItems.map((menuItem) => (
+              <Button key={menuItem.value}>
+                <menuItem.icon className="mr-2 h-4 w-4" />
+                {menuItem.label}
+              </Button>
+            ))}
           </nav>
         </div>
       </aside>
