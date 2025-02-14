@@ -1,3 +1,6 @@
+import CourseCurriculum from "@/components/instructor-view/courses/add-new-course/course-curriculum";
+import CourseLanding from "@/components/instructor-view/courses/add-new-course/course-landing";
+import CourseSettings from "@/components/instructor-view/courses/add-new-course/course-settings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,14 +27,14 @@ function AddNewCoursePage() {
                 <TabsTrigger value="settings">Settings</TabsTrigger>
               </TabsList>
               <TabsContent value="curriculum">
-
+                <CourseCurriculum />
               </TabsContent>
               <TabsContent value="course-landing-page">
-                
-                </TabsContent>
-                <TabsContent value="settings">
-                
-                </TabsContent>
+                <CourseLanding />
+              </TabsContent>
+              <TabsContent value="settings">
+                <CourseSettings />
+              </TabsContent>
             </Tabs>
           </div>
         </CardContent>
