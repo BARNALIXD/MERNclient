@@ -17,7 +17,7 @@ function CourseCurriculum() {
         {
           ...courseCurriculumInitialFormData[0]
         }
-      ])
+      ]);
     }
 
     console.log(courseCurriculumFormData);
@@ -49,6 +49,7 @@ function CourseCurriculum() {
               </div>
               <div className="mt-6">
                 <Input type="file" accept="video/*" className="mb-4" />
+
               </div>
             </div>
           ))}

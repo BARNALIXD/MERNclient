@@ -170,5 +170,4 @@ export const courseCurriculumInitialFormData = [
     freePreview: false,
     public_id: "",
   },
-
 ];
