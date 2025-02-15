@@ -11,17 +11,38 @@ function CourseCurriculum() {
   const { courseCurriculumFormData, setCourseCurriculumFormData } =
     useContext(InstructorContext);
 
-    function handleNewLecture(){
-      setCourseCurriculumFormData([
-        ...courseCurriculumFormData,
-        {
-          ...courseCurriculumInitialFormData[0]
-        }
-      ]);
-    }
+  function handleNewLecture() {
+    setCourseCurriculumFormData([
+      ...courseCurriculumFormData,
+      {
+        ...courseCurriculumInitialFormData[0],
+      },
+    ]);
+  }
 
-    console.log(courseCurriculumFormData);
+  function handleCourseTitleChange(event, currentIndex) {
+    let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
+    cpyCourseCurriculumFormData[currentIndex] = {
+      ...cpyCourseCurriculumFormData[currentIndex],
+      title: event.target.value,
+    };
 
+    setCourseCurriculumFormData(cpyCourseCurriculumFormData);
+  }
+
+  function handleFreePreviewChange(currentValue, currentIndex){
+    let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
+    cpyCourseCurriculumFormData[currentIndex] = {
+      ...cpyCourseCurriculumFormData[currentIndex],
+      freePreview: currentValue,
+    };
+
+    setCourseCurriculumFormData(cpyCourseCurriculumFormData);
+  }
+
+
+
+  console.log(courseCurriculumFormData);
 
   return (
     <Card>
@@ -39,9 +60,13 @@ function CourseCurriculum() {
                   name={`title-${index + 1}`}
                   placeholder="Enter Lecture title"
                   className="max-w-96"
+                  onChange={(event) => handleCourseTitleChange(event, index)}
+                  value={courseCurriculumFormData[index]?.title}
                 />
                 <div className="flex item-center space-x-2">
-                  <Switch checked={true} id={`freePreview-${index + 1}`} />
+                  <Switch onCheckedChange={(value)=>
+                   handleFreePreviewChange(value,index)} 
+                  checked={courseCurriculumFormData[index]?.freePreview} id={`freePreview-${index + 1}`} />
                   <Label htmlFor={`freePreview-${index + 1}`}>
                     Free Preview
                   </Label>
@@ -49,7 +74,6 @@ function CourseCurriculum() {
               </div>
               <div className="mt-6">
                 <Input type="file" accept="video/*" className="mb-4" />
-
               </div>
             </div>
           ))}
