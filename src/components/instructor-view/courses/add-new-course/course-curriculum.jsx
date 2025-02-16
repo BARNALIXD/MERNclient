@@ -8,8 +8,6 @@ import { InstructorContext } from "@/context/instructor-context";
 import { mediaUploadService } from "@/services";
 import { useContext } from "react";
 
-
-
 function CourseCurriculum() {
   const {
     courseCurriculumFormData,
@@ -58,13 +56,13 @@ function CourseCurriculum() {
       try {
         setMediaUploadProgress(true);
         const response = await mediaUploadService(videoFormData);
-        if(response.success){
+        if (response.success) {
           let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
           cpyCourseCurriculumFormData[currentIndex] = {
             ...cpyCourseCurriculumFormData[currentIndex],
             VideoUrl: response?.data?.url,
-            public_id: response?.data?.public_id
-          }
+            public_id: response?.data?.public_id,
+          };
           setCourseCurriculumFormData(cpyCourseCurriculumFormData);
           setMediaUploadProgress(false);
         }
