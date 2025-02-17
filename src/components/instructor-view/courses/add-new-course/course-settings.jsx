@@ -42,19 +42,20 @@ function CourseSettings() {
     }
   }
 
-  console.log(courseLandingFormData);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Course Settings</CardTitle>
       </CardHeader>
-      {mediaUploadProgress ? (
+         <div className="p-4">
+         {mediaUploadProgress ? (
         <MediaProgressbar
           isMediaUploading={mediaUploadProgress}
           progress={mediaUploadProgressPercentage}
         />
       ) : null}
+         </div>
       <CardContent>
         {courseLandingFormData?.image ? (
           <img src={courseLandingFormData.image} />
