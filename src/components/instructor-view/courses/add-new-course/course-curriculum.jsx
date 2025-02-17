@@ -14,6 +14,8 @@ function CourseCurriculum() {
     setCourseCurriculumFormData,
     mediaUploadProgress,
     setMediaUploadProgress,
+    mediaUploadProgressPercentage,
+    setMediaUploadProgressPercentage,
   } = useContext(InstructorContext);
 
   function handleNewLecture() {
