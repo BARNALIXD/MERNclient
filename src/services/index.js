@@ -20,8 +20,16 @@ export async function checkAuthService() {
   return data;
 }
 
-export async function mediaUploadService(formData) {
-  const { data } = await axiosInstance.post("/media/upload", formData);
+
+export async function mediaUploadService(formData, onProgressCallback) {
+  const { data } = await axiosInstance.post("/media/upload", formData, {
+    onUploadProgress: (ProgressEvent) => {
+      const PercentCompleted = Math.round(
+        (ProgressEvent.loaded * 100) / ProgressEvent.total
+      );
+      onProgressCallback(PercentCompleted);
+    },
+  });
 
   return data;
 }
