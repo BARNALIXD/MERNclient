@@ -1,8 +1,8 @@
-import { Slider } from "../ui/slider";
+import { Pause, Play, RotateCcw, RotateCw, Volume2, VolumeX } from "lucide-react";
 import { useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { Button } from "../ui/button";
-import { Pause, Play } from "lucide-react";
+import { Slider } from "../ui/slider";
 
 function VideoPlayer({ width = "100%", height = "100", url }) {
   const [playing, setPlaying] = useState(false);
@@ -17,10 +17,23 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
   const playerContainerRef = useRef(null);
   const controlsTimeoutRef = useRef(null);
 
-  function handlePlayandPause() {}
+  function handlePlayandPause() {
+    setPlaying(!playing);
+  }
 
-  function handleProgress() {
-    setPlaying(true);
+  function handleProgress() {}
+
+  function handleRewind() {}
+
+  function handleForward() {}
+
+  function handleToggleMute() {}
+
+  function handleSeekChange() {
+ 
+  }
+
+  function handleSeekMouseUp() {
   }
 
   return (
@@ -49,25 +62,55 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
           } `}
         >
           <Slider
-          value={[played *100]}
-          max={100}
-          step={0.1}
-          onValueChange={}
-          onValueCommit={}
-          className="w-full mb-4"
+            value={[played * 100]}
+            max={100}
+            step={0.1}
+            onValueChange={(value) => handleSeekChange([value[0]/100])}
+            onValueCommit={handleSeekMouseUp}
+            className="w-full mb-4"
           />
           <div className="flex items-center justify-between">
-           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" onClick={handlePlayandPause}
-            className="text-white hover:text-primary hover:bg-gray-700"
-            > 
-            {
-              playing ? <Pause className="h-6 w-6"/> : <Play className="h-6 w-6"/>
-            }
-
-            </Button>
-            <Button></Button>
-           </div>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handlePlayandPause}
+                className="text-white hover:text-primary hover:bg-gray-700"
+              >
+                {playing ? (
+                  <Pause className="h-6 w-6" />
+                ) : (
+                  <Play className="h-6 w-6" />
+                )}
+              </Button>
+              <Button
+                onClick={handleRewind}
+                className="text-white hover:text-primary hover:bg-gray-700"
+                variant="ghost"
+                size="icon"
+              >
+                <RotateCcw className="h-6 w-6"/>
+              </Button>
+              <Button
+                onClick={handleForward}
+                className="text-white hover:text-primary hover:bg-gray-700"
+                variant="ghost"
+                size="icon"
+              >
+                <RotateCw className="h-6 w-6"/>
+              </Button>
+              <Button
+                onClick={handleToggleMute}
+                className="text-white hover:text-primary hover:bg-gray-700"
+                variant="ghost"
+                size="icon"
+              >
+                {
+                  muted ?
+                  <VolumeX className="h-6 w-6"/> : <Volume2 className="h-6 w-6"/>
+                }
+              </Button>
+            </div>
           </div>
         </div>
       )}

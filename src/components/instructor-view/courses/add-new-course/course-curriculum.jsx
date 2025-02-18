@@ -50,7 +50,6 @@ function CourseCurriculum() {
   }
 
   async function handleSingleLectureUpload(event, currentIndex) {
-    console.log(event.target.files);
     const selectedFile = event.target.files[0];
 
     if (selectedFile) {
@@ -79,7 +78,7 @@ function CourseCurriculum() {
     }
   }
 
-  console.log(courseCurriculumFormData);
+  // console.log(courseCurriculumFormData);
 
   return (
     <Card>
@@ -124,6 +123,8 @@ function CourseCurriculum() {
                   <div className="flex gap-3">
                     <VideoPlayer
                       url={courseCurriculumFormData[index]?.videoUrl}
+                      width="450px"
+                      height="200px"
                     />
                     <Button>Replace video</Button>
                     <Button className="bg-red-900">Delete Lecture</Button>
@@ -148,3 +149,4 @@ function CourseCurriculum() {
 }
 
 export default CourseCurriculum;
+
