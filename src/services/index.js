@@ -24,10 +24,10 @@ export async function checkAuthService() {
 export async function mediaUploadService(formData, onProgressCallback) {
   const { data } = await axiosInstance.post("/media/upload", formData, {
     onUploadProgress: (ProgressEvent) => {
-      const PercentCompleted = Math.round(
+      const percentCompleted = Math.round(
         (ProgressEvent.loaded * 100) / ProgressEvent.total
       );
-      onProgressCallback(PercentCompleted);
+      onProgressCallback(percentCompleted);
     },
   });
 
