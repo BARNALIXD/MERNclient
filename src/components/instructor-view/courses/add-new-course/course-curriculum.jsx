@@ -153,8 +153,6 @@
 
 
 
-
-
 import MediaProgressbar from "@/components/media-progress-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -282,6 +280,7 @@ function CourseCurriculum() {
                   <div className="flex gap-3 items-center">
                     <VideoPlayer url={curriculumItem.videoUrl} width="450px" height="200px" />
 
+                    {/* Hidden file input for replacing video */}
                     <input
                       ref={(el) => (fileInputRefs.current[index] = el)}
                       type="file"
@@ -290,10 +289,12 @@ function CourseCurriculum() {
                       onChange={(event) => handleSingleLectureUpload(event, index)}
                     />
 
+                    {/* Replace Video Button */}
                     <Button onClick={() => fileInputRefs.current[index]?.click()}>
                       Replace video
                     </Button>
 
+                    {/* Delete Lecture Button */}
                     <Button className="bg-red-900" onClick={() => handleDeleteLecture(index)}>
                       Delete Lecture
                     </Button>
