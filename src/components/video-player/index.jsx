@@ -1,4 +1,11 @@
-import { Pause, Play, RotateCcw, RotateCw, Volume2, VolumeX } from "lucide-react";
+import {
+  Pause,
+  Play,
+  RotateCcw,
+  RotateCw,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import { useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { Button } from "../ui/button";
@@ -21,19 +28,36 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
     setPlaying(!playing);
   }
 
-  function handleProgress() {}
+  function handleProgress(state) {
+    if (!seeking) {
+      setPlayed(state.played);
+    }
+  }
 
-  function handleRewind() {}
+  function handleRewind() {
+    playerRef?.current?.seekTo(playerRef?.current?.getCurrentTime() - 5);
+  }
 
-  function handleForward() {}
+  function handleForward() {
+    playerRef?.current?.seekTo(playerRef?.current?.getCurrentTime() + 5);
+  }
 
-  function handleToggleMute() {}
+  function handleToggleMute() {
+    setMuted(!muted);
+  }
 
-  function handleSeekChange() {
- 
+  function handleSeekChange(newValue) {
+    setPlayed(newValue[0]);
+    setSeeking(true);
   }
 
   function handleSeekMouseUp() {
+    setSeeking(false);
+    playerRef.current?.seekTo(played);
+  }
+
+  function handleVolumeChange(newValue) {
+    setVolume(newValue[0]);
   }
 
   return (
@@ -54,9 +78,8 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
         volume={volume}
         muted={muted}
         onProgress={handleProgress}
-        controls
       />
-      {/* {showControls && (
+      {showControls && (
         <div
           className={`absolute bottom-0 left-0 right-0 bg-gray-800 bg-opacity-75 p-4 transition-opacity duration-300 ${
             showControls ? "opacity-100" : "opacity-0"
@@ -66,7 +89,7 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
             value={[played * 100]}
             max={100}
             step={0.1}
-            onValueChange={(value) => handleSeekChange([value[0]/100])}
+            onValueChange={(value) => handleSeekChange([value[0] / 100])}
             onValueCommit={handleSeekMouseUp}
             className="w-full mb-4"
           />
@@ -86,35 +109,43 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
               </Button>
               <Button
                 onClick={handleRewind}
-                className="text-white hover:text-primary hover:bg-gray-700"
+                className="text-white bg-transparent hover:text-white hover:bg-gray-700"
                 variant="ghost"
                 size="icon"
               >
-                <RotateCcw className="h-6 w-6"/>
+                <RotateCcw className="h-6 w-6" />
               </Button>
               <Button
                 onClick={handleForward}
-                className="text-white hover:text-primary hover:bg-gray-700"
+                className="text-white bg-transparent hover:text-white hover:bg-gray-700"
                 variant="ghost"
                 size="icon"
               >
-                <RotateCw className="h-6 w-6"/>
+                <RotateCw className="h-6 w-6" />
               </Button>
               <Button
                 onClick={handleToggleMute}
-                className="text-white hover:text-primary hover:bg-gray-700"
+                className="text-white bg-transparent hover:text-white hover:bg-gray-700"
                 variant="ghost"
                 size="icon"
               >
-                {
-                  muted ?
-                  <VolumeX className="h-6 w-6"/> : <Volume2 className="h-6 w-6"/>
-                }
+                {muted ? (
+                  <VolumeX className="h-6 w-6" />
+                ) : (
+                  <Volume2 className="h-6 w-6" />
+                )}
               </Button>
+              <Slider
+                value={[volume * 100]}
+                max={100}
+                step={1}
+                onValueChange={(value) => handleVolumeChange([value[0] / 100])}
+                className="w-24 "
+              />
             </div>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 }
