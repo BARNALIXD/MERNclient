@@ -60,6 +60,23 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
     setVolume(newValue[0]);
   }
 
+  function pad(string) {
+    return ("0" + string).slice(-2);
+  }
+
+  function formatTime(seconds) {
+    const date = new Date(seconds * 1000);
+    const hh = date.getUTCHours();
+    const mm = date.getUTCMinutes();
+    const ss = date.getUTCSeconds();
+
+    if (hh) {
+      return `${hh}:${pad(mm)}:${ss}`;
+    }
+
+    return `${mm}:${ss}`;
+  }
+
   return (
     <div
       ref={playerContainerRef}
@@ -142,6 +159,13 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
                 onValueChange={(value) => handleVolumeChange([value[0] / 100])}
                 className="w-24 "
               />
+              15/50
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="text-white">
+                {formatTime(played * (playerRef?.current?.getDuration() || 0))}{" "}
+                / {formatTime(playerRef?.current?.getDuration() || 0)}
+              </div>
             </div>
           </div>
         </div>
