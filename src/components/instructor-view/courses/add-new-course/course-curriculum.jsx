@@ -75,13 +75,16 @@ function CourseCurriculum() {
       }
     }
   }
-  
-  async function handleReplaceVideo(currentIndex){
-    let cpyCourseCurriculumFormData = [...cpyCourseCurriculumFormData];
-    const getCurrentVideoPublicId = cpyCourseCurriculumFormData[currentIndex].public_id;
 
-    const deleteCurrentMediaResponse = await mediaDeleteService(getCurrentVideoPublicId);
-    console.log(deleteCurrentMediaResponse, 'deleteCurrentMediaResponse' );
+  async function handleReplaceVideo(currentIndex) {
+    let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
+    const getCurrentVideoPublicId =
+      cpyCourseCurriculumFormData[currentIndex].public_id;
+
+    const deleteCurrentMediaResponse = await mediaDeleteService(
+      getCurrentVideoPublicId
+    );
+    console.log(deleteCurrentMediaResponse, "deleteCurrentMediaResponse");
   }
 
   function isCourseCurriculumFormDataValid() {
@@ -97,6 +100,7 @@ function CourseCurriculum() {
 
   function handleDeleteLecture(currentIndex) {
     let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
+
     cpyCourseCurriculumFormData.splice(currentIndex, 1);
     setCourseCurriculumFormData(cpyCourseCurriculumFormData);
   }
