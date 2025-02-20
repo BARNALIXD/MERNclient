@@ -84,7 +84,15 @@ function CourseCurriculum() {
     const deleteCurrentMediaResponse = await mediaDeleteService(
       getCurrentVideoPublicId
     );
-    console.log(deleteCurrentMediaResponse, "deleteCurrentMediaResponse");
+
+    if(deleteCurrentMediaResponse?.success){
+      cpyCourseCurriculumFormData[currentIndex] = {
+        ...cpyCourseCurriculumFormData[currentIndex],
+        videoUrl: "",
+        public_id: "",
+      };
+      setCourseCurriculumFormData(cpyCourseCurriculumFormData);
+    }
   }
 
   function isCourseCurriculumFormDataValid() {
@@ -97,6 +105,8 @@ function CourseCurriculum() {
       );
     });
   }
+
+  console.log(courseCurriculumFormData);
 
   function handleDeleteLecture(currentIndex) {
     let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
