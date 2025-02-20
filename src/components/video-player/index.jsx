@@ -1,4 +1,6 @@
 import {
+  Maximize,
+  Minimize,
   Pause,
   Play,
   RotateCcw,
@@ -6,12 +8,16 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { Button } from "../ui/button";
 import { Slider } from "../ui/slider";
 
-function VideoPlayer({ width = "100%", height = "100", url }) {
+function VideoPlayer({
+  width = "100%",
+  height = "100%",
+  url,
+  }) {
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [muted, setMuted] = useState(false);
@@ -77,6 +83,36 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
     return `${mm}:${ss}`;
   }
 
+  const handleFullScreen = useCallback(() => {
+    if (!isFullScreen) {
+      if (playerContainerRef?.current.requestFullscreen) {
+        playerContainerRef?.current?.requestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }, [isFullScreen]);
+
+  function handleMouseMove() {
+    setShowControls(true);
+    clearTimeout(controlsTimeoutRef.current);
+    controlsTimeoutRef.current = setTimeout(() => setShowControls(false), 3000);
+  }
+
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(document.fullscreenElement); 
+    };
+    document.addEventListener("fullscreenchange", handleFullScreenChange);
+  
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullScreenChange);
+    };
+  }, []);
+  
+
   return (
     <div
       ref={playerContainerRef}
@@ -84,6 +120,8 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
     ${isFullScreen ? "w-screen h-screen" : ""}
     `}
       style={{ width, height }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setShowControls(false)}
     >
       <ReactPlayer
         ref={playerRef}
@@ -159,13 +197,24 @@ function VideoPlayer({ width = "100%", height = "100", url }) {
                 onValueChange={(value) => handleVolumeChange([value[0] / 100])}
                 className="w-24 "
               />
-              15/50
             </div>
             <div className="flex items-center space-x-2">
               <div className="text-white">
                 {formatTime(played * (playerRef?.current?.getDuration() || 0))}{" "}
                 / {formatTime(playerRef?.current?.getDuration() || 0)}
               </div>
+              <Button
+                className="text-white bg-transparent hover:text-white hover:bg-gray-700"
+                variant="ghost"
+                size="icon"
+                onClick={handleFullScreen}
+              >
+                {isFullScreen ? (
+                  <Minimize className="h-6 w-6" />
+                ) : (
+                  <Maximize className="h-6 w-6" />
+                )}
+              </Button>
             </div>
           </div>
         </div>
