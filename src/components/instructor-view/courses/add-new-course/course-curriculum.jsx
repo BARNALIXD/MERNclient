@@ -204,32 +204,42 @@ function CourseCurriculum() {
 
   async function handleSingleLectureUpload(event, currentIndex) {
     const selectedFile = event.target.files[0];
-    if (!selectedFile) return;
 
-    const videoFormData = new FormData();
-    videoFormData.append("file", selectedFile);
+    if (selectedFile) {
+      const videoFormData = new FormData();
+      videoFormData.append("file", selectedFile);
 
-    try {
-      setMediaUploadProgress(true);
-      const response = await mediaUploadService(
-        videoFormData,
-        setMediaUploadProgressPercentage
-      );
-
-      if (response.success) {
-        let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
-        cpyCourseCurriculumFormData[currentIndex] = {
-          ...cpyCourseCurriculumFormData[currentIndex],
-          videoUrl: response?.data?.url,
-          public_id: response?.data?.public_id,
-        };
-        setCourseCurriculumFormData(cpyCourseCurriculumFormData);
+      try {
+        setMediaUploadProgress(true);
+        const response = await mediaUploadService(
+          videoFormData,
+          setMediaUploadProgressPercentage
+        );
+        if (response.success) {
+          let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
+          cpyCourseCurriculumFormData[currentIndex] = {
+            ...cpyCourseCurriculumFormData[currentIndex],
+            videoUrl: response?.data?.url,
+            public_id: response?.data?.public_id,
+          };
+          setCourseCurriculumFormData(cpyCourseCurriculumFormData);
+          setMediaUploadProgress(false);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.error("Upload failed:", error);
-    } finally {
-      setMediaUploadProgress(false);
     }
+  }
+
+  function isCourseCurriculumFormDataValid(){
+    return courseCurriculumFormData.every((item) => {
+      return (
+        item &&
+        typeof item === "object" &&
+        item.title.trim() !== "" &&
+        item.videoUrl.trim() !== ""
+      );
+    });
   }
 
   function handleDeleteLecture(currentIndex) {
@@ -244,7 +254,7 @@ function CourseCurriculum() {
         <CardTitle>Create Course Curriculum</CardTitle>
       </CardHeader>
       <CardContent>
-        <Button onClick={handleNewLecture}>Add Lecture</Button>
+        <Button disabled={!isCourseCurriculumFormDataValid() || mediaUploadProgress} onClick={handleNewLecture}>Add Lecture</Button>
 
         {mediaUploadProgress && (
           <MediaProgressbar
