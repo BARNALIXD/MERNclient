@@ -3,12 +3,25 @@ import InstructorDashboard from "@/components/instructor-view/dashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { AuthContext } from "@/context/auth-context";
+import { InstructorContext } from "@/context/instructor-context";
+import { fetchInstructorCourseListService } from "@/services";
 import { BarChart, Book, LogOut } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 function InstructorDashboardpage() {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const {resetCredentials} = useContext(AuthContext)
+  const { resetCredentials } = useContext(AuthContext);
+  const { instructorCoursesList, setInstructorCoursesList } =
+    useContext(InstructorContext);
+
+  async function fetchAllCourses() {
+    const response = await fetchInstructorCourseListService();
+    if (response?.success) setInstructorCoursesList(response?.data);
+  }
+
+  useEffect(() => {
+    fetchAllCourses();
+  }, []);
 
   const menuItems = [
     {
@@ -21,7 +34,7 @@ function InstructorDashboardpage() {
       icon: Book,
       label: "Courses",
       value: "courses",
-      component: <InstructorCourses />,
+      component: <InstructorCourses listOfCourses={instructorCoursesList}/>,
     },
     {
       icon: LogOut,
@@ -32,7 +45,7 @@ function InstructorDashboardpage() {
   ];
 
   function handleLogout() {
-    resetCredentials()
+    resetCredentials();
     sessionStorage.clear();
   }
 
@@ -46,7 +59,7 @@ function InstructorDashboardpage() {
               <Button
                 className="w-full justify-start mb-2"
                 key={menuItem.value}
-                variant={activeTab === menuItem.value ? "secondary" : "ghost" }
+                variant={activeTab === menuItem.value ? "secondary" : "ghost"}
                 onClick={
                   menuItem.value === "logout"
                     ? handleLogout
