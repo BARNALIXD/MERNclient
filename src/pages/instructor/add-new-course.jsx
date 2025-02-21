@@ -4,13 +4,21 @@ import CourseSettings from "@/components/instructor-view/courses/add-new-course/
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { courseCurriculumInitialFormData, courseLandingInitialFormData } from "@/config";
+import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
+import { addNewCourseService } from "@/services";
 import { Tabs } from "@radix-ui/react-tabs";
 import { useContext } from "react";
 
 function AddNewCoursePage() {
-  const { courseCurriculumFormData, courseLandingFormData } =
-    useContext(InstructorContext);
+  const {
+    courseCurriculumFormData,
+    courseLandingFormData,
+    setCourseLandingFormData,
+    setCourseCurriculumFormData,
+  } = useContext(InstructorContext);
+  const { auth } = useContext(AuthContext);
 
   function isEmpty(value) {
     if (Array.isArray(value)) {
@@ -46,6 +54,25 @@ function AddNewCoursePage() {
     return hasFreePreview;
   }
 
+  async function handleCreateCourse() {
+    const courseFinalFormData = {
+      instructorId: auth?.user?._id,
+      instructorName: auth?.user?.userName,
+      date: new Date(),
+      ...courseLandingFormData,
+      students: [],
+      curriculum: courseCurriculumFormData,
+      isPublised: true,
+    };
+    const response = await addNewCourseService(courseFinalFormData);
+
+    if (response?.success) {
+      setCourseLandingFormData(courseLandingInitialFormData);
+      setCourseCurriculumFormData(courseCurriculumInitialFormData);
+    }
+
+    console.log(courseCurriculumFormData, "courseFinalFormData");
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -54,6 +81,7 @@ function AddNewCoursePage() {
         <Button
           disabled={!validateFormData()}
           className="text-sm tracking-wider font-bold px-8"
+          onClick={handleCreateCourse}
         >
           SUBMIT
         </Button>
