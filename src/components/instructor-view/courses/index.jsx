@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 function InstructorCourses({ listOfCourses }) {
   const navigate = useNavigate();
 
+
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
@@ -47,7 +48,9 @@ function InstructorCourses({ listOfCourses }) {
                       <TableCell>{course?.students?.length}</TableCell>
                       <TableCell>{course?.pricing}</TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="sm">
+                        <Button onClick={() => {
+                          navigate(`/instructor/edit-course/${course?._id}`)
+                        }} variant="ghost" size="sm">
                           <Edit className="h-6 w-6" />
                         </Button>
                         <Button variant="ghost" size="sm">
