@@ -16,7 +16,6 @@ export default function InstructorProvider({ children }) {
   const [mediaUploadProgress, setMediaUploadProgress] = useState(false);
   const [mediaUploadProgressPercentage, setMediaUploadProgressPercentage] =
     useState(0);
-
   const [instructorCoursesList, setInstructorCoursesList] = useState([]);
   const [currentEditedCourseId, setCurrentEditedCourseId] = useState(null);
 

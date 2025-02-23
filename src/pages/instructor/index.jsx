@@ -28,13 +28,13 @@ function InstructorDashboardpage() {
       icon: BarChart,
       label: "Dashboard",
       value: "dashboard",
-      component: <InstructorDashboard />,
+      component: <InstructorDashboard listOfCourses={instructorCoursesList} />,
     },
     {
       icon: Book,
       label: "Courses",
       value: "courses",
-      component: <InstructorCourses listOfCourses={instructorCoursesList}/>,
+      component: <InstructorCourses listOfCourses={instructorCoursesList} />,
     },
     {
       icon: LogOut,
@@ -48,6 +48,8 @@ function InstructorDashboardpage() {
     resetCredentials();
     sessionStorage.clear();
   }
+
+  console.log(instructorCoursesList, "instructorCoursesList");
 
   return (
     <div className="flex h-full min-h-screen bg-gray-100">
