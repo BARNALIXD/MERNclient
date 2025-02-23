@@ -97,6 +97,7 @@ function AddNewCoursePage() {
     console.log(courseFinalFormData, "courseFinalFormData");
   }
 
+
   async function fetchCurrentCourseDetails() {
     const response = await fetchInstructorCourseDetailsService(
       currentEditedCourseId
