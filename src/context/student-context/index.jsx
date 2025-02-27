@@ -10,5 +10,8 @@ export default function StudentProvider({children}){
 
 
     return <StudentContext.Provider
-    value={{studentCoursesList, setStudentCoursesList}}>{children}</StudentContext.Provider>
+    value={{studentCoursesList, setStudentCoursesList}}
+    >
+        {children}
+        </StudentContext.Provider>
 }
