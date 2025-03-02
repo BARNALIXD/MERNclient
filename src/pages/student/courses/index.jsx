@@ -14,10 +14,27 @@ import { StudentContext } from "@/context/student-context";
 import { fetchStudentViewCourseListService } from "@/services";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
+import { createSearchParams, useSearchParams } from "react-router-dom";
+
+function createSearchParamsHelper(filterParams) {
+  const queryParams = [];
+
+  for (const [key, value] of Object.entries(filterParams)) {
+    if (Array.isArray(value) && value.length > 0) {
+      const paramValue = value.join(",");
+
+      queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+    }
+  }
+
+  return queryParams.join("&");
+}
+
 
 function StudentViewCoursesPage() {
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams()
   const { studentViewCoursesList, setStudentViewCoursesList } =
     useContext(StudentContext);
 
@@ -52,6 +69,11 @@ function StudentViewCoursesPage() {
   }
 
   useEffect(() => {
+    const buildQueryStringForFilters = createSearchParamsHelper(filters)
+    setSearchParams(new URLSearchParams(buildQueryStringForFilters))
+  }, [filters]);
+
+  useEffect(() => {
     fetchAllStudentViewCourses();
   }, []);
 
@@ -70,7 +92,12 @@ function StudentViewCoursesPage() {
                   {filterOptions[keyItem].map((option) => (
                     <Label className="flex font-medium items-center gap-3">
                       <Checkbox
-                        checked={false}
+                        checked={
+                          filters &&
+                          Object.keys(filters).length > 0 &&
+                          filters[keyItem] &&
+                          filters[keyItem].indexOf(option.id) > -1
+                        }
                         onCheckedChange={() =>
                           handleFilterOnChange(keyItem, option)
                         }
