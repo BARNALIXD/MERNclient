@@ -107,7 +107,11 @@ function StudentViewCoursesPage() {
                           {courseItem?.instructorName}
                         </span>
                       </p>
-                      <p></p>
+                      <p className="text-[18px] text-black mb-2">
+                        {
+                          `${courseItem?.curriculum?.length} Lectures - ${courseItem?.level.toUpperCase()} Level`
+                        }
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
