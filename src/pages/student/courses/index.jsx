@@ -65,8 +65,8 @@ function StudentViewCoursesPage() {
   async function fetchAllStudentViewCourses(filters, sort) {
     const query = new URLSearchParams({
       ...filters,
-      sortBy : sort
-    })
+      sortBy: sort,
+    });
     const response = await fetchStudentViewCourseListService(query);
     if (response?.success) setStudentViewCoursesList(response?.data);
   }
@@ -77,9 +77,20 @@ function StudentViewCoursesPage() {
   }, [filters]);
 
   useEffect(() => {
+    setSort("price-lowtohigh");
+    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+  }, []);
+
+  useEffect(() => {
     if (filters !== null && sort !== null)
       fetchAllStudentViewCourses(filters, sort);
   }, [filters, sort]);
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem("filters");
+    };
+  }, []);
 
   console.log(filters);
 
@@ -181,7 +192,7 @@ function StudentViewCoursesPage() {
                 </Card>
               ))
             ) : (
-              <h1>no courses found</h1>
+              <h1 className="font-extrabold text-4xl">No courses found</h1>
             )}
           </div>
         </main>
