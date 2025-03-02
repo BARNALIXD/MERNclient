@@ -89,7 +89,7 @@ function StudentViewCoursesPage() {
           <div className="space-y-4">
             {studentViewCoursesList && studentViewCoursesList.length > 0 ? (
               studentViewCoursesList.map((courseItem) => (
-                <Card key={courseItem?._id}>
+                <Card className="cursor-pointer" key={courseItem?._id}>
                   <CardContent className="flex gap-4 p-4">
                     <div className="w-48 h-32 flex-shrink-0">
                       <img
@@ -107,10 +107,15 @@ function StudentViewCoursesPage() {
                           {courseItem?.instructorName}
                         </span>
                       </p>
-                      <p className="text-[18px] text-black mb-2">
-                        {
-                          `${courseItem?.curriculum?.length} Lectures - ${courseItem?.level.toUpperCase()} Level`
-                        }
+                      <p className="text-[16px] text-gray-600 mt-3 mb-2">
+                        {`${courseItem?.curriculum?.length} ${
+                          courseItem?.curriculum?.length <= 1
+                            ? "Lecture"
+                            : "Lectures"
+                        } - ${courseItem?.level.toUpperCase()} Level`}
+                      </p>
+                      <p className="font-bold text-lg">
+                        ${courseItem?.pricing}
                       </p>
                     </div>
                   </CardContent>
