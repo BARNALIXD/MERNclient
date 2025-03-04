@@ -9,6 +9,7 @@ import AddNewCoursePage from "./pages/instructor/add-new-course";
 import NotFoundPage from "./pages/not-found";
 import StudentHomePage from "./pages/student/home";
 import StudentViewCoursesPage from "./pages/student/courses";
+import StudentViewCourseDetailsPage from "./pages/student/course-details";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -35,7 +36,7 @@ function App() {
           />
         }
       />
-        <Route
+      <Route
         path="/instructor/create-new-course"
         element={
           <RouteGaurd
@@ -45,7 +46,7 @@ function App() {
           />
         }
       />
-          <Route
+      <Route
         path="/instructor/edit-course/:courseId"
         element={
           <RouteGaurd
@@ -68,9 +69,12 @@ function App() {
         <Route path="" element={<StudentHomePage />} />
         <Route path="home" element={<StudentHomePage />} />
         <Route path="courses" element={<StudentViewCoursesPage />} />
-
+        <Route
+          path="course/details/:id"
+          element={<StudentViewCourseDetailsPage />}
+        />
       </Route>
-      <Route path="*" element={<NotFoundPage/>}/>
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
