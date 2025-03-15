@@ -25,8 +25,9 @@ function StudentViewCourseDetailsPage() {
     loadingState,
     setLoadingState,
   } = useContext(StudentContext);
-  // debugger
-  // console.log(currentCourseDetailsId);
+
+  
+
   const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] =
     useState(null);
   const [showFreePreviewDailog, setShowFreePreviewDailog] = useState(false);
@@ -50,11 +51,9 @@ function StudentViewCourseDetailsPage() {
     }
   }
 
-
-
   function handleSetFreePreview(getCurrentVideoInfo) {
     console.log(getCurrentVideoInfo);
-    setDisplayedCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
+    setDisplayCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
   }
 
   useEffect(() => {
@@ -69,10 +68,11 @@ function StudentViewCourseDetailsPage() {
     if (id) setCurrentCourseDetailsId(id);
   }, [id]);
 
-  useEffect(() => {
-    if (!location.pathname.includes("courses/details"))
-      setStudentViewCourseDetails(null), setCurrentCourseDetailsId(null);
-  }, [location.pathname]);
+  // useEffect(() => {
+  //   if (!location.pathname.includes("courses/details"))
+  //     setStudentViewCourseDetails(null), 
+  //     setCurrentCourseDetailsId(null);
+  // }, [location.pathname]);
 
   if (loadingState) return <Skeleton />;
 
@@ -144,6 +144,7 @@ function StudentViewCourseDetailsPage() {
               {studentViewCourseDetails?.curriculum?.map(
                 (curriculumItem, index) => (
                   <li
+            
                     className={`${
                       curriculumItem?.freePreview
                         ? "cursor-pointer"
@@ -188,7 +189,7 @@ function StudentViewCourseDetailsPage() {
                   ${studentViewCourseDetails?.pricing}
                 </span>
               </div>
-              <Button className="w-full">Buy tommorow</Button>
+              <Button className="w-full">Buy Now</Button>
             </CardContent>
           </Card>
         </aside>
