@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import VideoPlayer from "@/components/video-player";
+import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
-import { fetchStudentViewCourseDetailsService } from "@/services";
+import { createPaymentService, fetchStudentViewCourseDetailsService } from "@/services";
 import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
@@ -26,11 +27,12 @@ function StudentViewCourseDetailsPage() {
     setLoadingState,
   } = useContext(StudentContext);
 
-  
+  const { auth } = useContext(AuthContext);
 
   const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] =
     useState(null);
   const [showFreePreviewDailog, setShowFreePreviewDailog] = useState(false);
+  const [approvalUrl, setApprovalUrl] = useState('');
 
   const { id } = useParams();
   const location = useLocation();
@@ -39,8 +41,6 @@ function StudentViewCourseDetailsPage() {
     const response = await fetchStudentViewCourseDetailsService(
       currentCourseDetailsId
     );
-  
-   
 
     if (response?.success) {
       setStudentViewCourseDetails(response?.data);
@@ -56,12 +56,40 @@ function StudentViewCourseDetailsPage() {
     setDisplayCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
   }
 
+  async function handleCreatePayment() {
+    const paymentPayload = {
+      userId: auth?.user?._id,
+      userName: auth?.user?.userName,
+      userEmail: auth?.user?.userEmail,
+      orderStatus: "pending",
+      paymentMethod: "paypal",
+      paymentStatus: "initiated",
+      orderDate: new Date(),
+      paymentId: "",
+      payerId: "",
+      instructorId: studentViewCourseDetails?.instructorId,
+      instructorName: studentViewCourseDetails?.instructorName,
+      courseImage: studentViewCourseDetails?.image,
+      courseTitle: studentViewCourseDetails?.title,
+      courseId: studentViewCourseDetails?._id,
+      coursePricing: studentViewCourseDetails?.pricing,
+    };
+
+    console.log(paymentPayload, "paymentPayload");
+    const response = await createPaymentService(paymentPayload);
+
+    if(response.success){
+      sessionStorage.setItem('currentOrderId', JSON.stringyfy(response?.data?.orderId))
+      setApprovalUrl(response?.data?.approvalUrl)
+    }
+  }
+
   useEffect(() => {
     if (displayCurrentVideoFreePreview !== null) setShowFreePreviewDailog(true);
   }, [displayCurrentVideoFreePreview]);
 
   useEffect(() => {
-    if (currentCourseDetailsId !==null)  fetchStudentViewCourseDetails();
+    if (currentCourseDetailsId !== null) fetchStudentViewCourseDetails();
   }, [currentCourseDetailsId]);
 
   useEffect(() => {
@@ -70,11 +98,15 @@ function StudentViewCourseDetailsPage() {
 
   // useEffect(() => {
   //   if (!location.pathname.includes("courses/details"))
-  //     setStudentViewCourseDetails(null), 
+  //     setStudentViewCourseDetails(null),
   //     setCurrentCourseDetailsId(null);
   // }, [location.pathname]);
 
   if (loadingState) return <Skeleton />;
+
+  if(approvalUrl !== ''){
+    window.location.href = approvalUrl;
+  }
 
   const getIndexOfFreePreviewUrl =
     studentViewCourseDetails !== null
@@ -82,12 +114,6 @@ function StudentViewCourseDetailsPage() {
           (item) => item.freePreview
         )
       : -1;
-
-  console.log(
-    getIndexOfFreePreviewUrl,
-    studentViewCourseDetails?.curriculum[getIndexOfFreePreviewUrl],
-    "barnali"
-  );
 
   return (
     <div className=" mx-auto p-4">
@@ -144,7 +170,6 @@ function StudentViewCourseDetailsPage() {
               {studentViewCourseDetails?.curriculum?.map(
                 (curriculumItem, index) => (
                   <li
-            
                     className={`${
                       curriculumItem?.freePreview
                         ? "cursor-pointer"
@@ -189,7 +214,9 @@ function StudentViewCourseDetailsPage() {
                   ${studentViewCourseDetails?.pricing}
                 </span>
               </div>
-              <Button className="w-full">Buy Now</Button>
+              <Button onClick={handleCreatePayment} className="w-full">
+                Buy Now
+              </Button>
             </CardContent>
           </Card>
         </aside>
