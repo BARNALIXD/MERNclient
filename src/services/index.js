@@ -1,13 +1,35 @@
 import axiosInstance from "@/api/axiosInstance";
 
-export async function registerService(formData) {
-  const { data } = await axiosInstance.post("/auth/register", {
-    ...formData,
-    role: "user",
-  });
+// export async function registerService(formData) {
+//   const { data } = await axiosInstance.post("/auth/register", {
+//     ...formData,
+//     role: "user",
+//   });
+//   console.log("nio" , data);
+//   return data;
+// }
 
-  return data;
+export async function registerService(formData) {
+  try {
+      const { data } = await axiosInstance.post("/auth/register", {
+          ...formData,
+          role: "user",
+      });
+      console.log("Success:", data);
+      return data;
+  } catch (error) {
+    console.log("Error:", error);
+      if (error.response) {
+        return error;
+      } else if (error.request) {
+          throw new Error("No response from server. Please try again later.");
+      } else {
+          throw new Error("Unexpected error occurred. Please try again.");
+      }
+  }
 }
+
+
 
 export async function loginService(formData) {
   const { data } = await axiosInstance.post("/auth/login", formData);
@@ -17,7 +39,7 @@ export async function loginService(formData) {
 
 export async function checkAuthService() {
   const { data } = await axiosInstance.get("/auth/check-auth");
-
+   console.log("hello");
   return data;
 }
 
@@ -106,4 +128,3 @@ export async function captureAndFinalizePaymentService(formData) {
 
   return data;
 }
-

@@ -14,10 +14,29 @@ export default function AuthProvider({ children }) {
   });
 
   const [loading, setLoading] = useState(true);
+  const [alert, setAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [success, setSuccess] = useState(false);
 
   async function handleRegisterUser(event) {
     event.preventDefault();
     const data = await registerService(signUpFormData);
+    if (data?.response?.data?.success === false) {
+      setAlert(true);
+      setAlertMsg(data.response.data.message);
+      setTimeout(() => {
+        setAlert(false);
+      }, 2000);
+    }
+    else if (data.response.data.success === true) {
+      setAlert(true);
+      setAlertMsg(data.response.data.message);
+      setSuccess(true);
+      setTimeout(() => {
+        setAlert(false);
+        setSuccess(false);
+      }, 2000);
+    }
   }
   async function handleLoginUser(event) {
     event.preventDefault();
@@ -59,7 +78,7 @@ export default function AuthProvider({ children }) {
       }
     } catch (error) {
       console.log(error);
-      if(!error?.response?.data.success){
+      if (!error?.response?.data.success) {
         setAuth({
           authenticate: false,
           user: null,
@@ -69,11 +88,11 @@ export default function AuthProvider({ children }) {
     }
   }
 
-  function resetCredentials(){
+  function resetCredentials() {
     setAuth({
       authenticate: false,
       user: null,
-    })
+    });
   }
 
   useEffect(() => {
@@ -91,6 +110,13 @@ export default function AuthProvider({ children }) {
         handleLoginUser,
         auth,
         resetCredentials,
+        alert,
+        setAlert,
+        alertMsg,
+        setAlertMsg,
+        success,
+        setSuccess,
+        
       }}
     >
       {loading ? <Skeleton /> : children}

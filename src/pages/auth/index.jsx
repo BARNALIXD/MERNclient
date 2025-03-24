@@ -1,4 +1,5 @@
 import CommonForm from "@/components/common-form";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Card,
   CardContent,
@@ -9,7 +10,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { signInFormControls, signUpFormControls } from "@/config";
 import { AuthContext } from "@/context/auth-context";
-import { GraduationCap } from "lucide-react";
+import { AlertCircle, GraduationCap } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -22,6 +23,9 @@ function AuthPage() {
     setSignUpFormData,
     handleRegisterUser,
     handleLoginUser,
+    alert,
+    alertMsg,
+    success,
   } = useContext(AuthContext);
 
   function handleTabChange(value) {
@@ -96,6 +100,7 @@ function AuthPage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <CommonForm
+
                   formControls={signUpFormControls}
                   buttonText={"Sign Up"}
                   formData={signUpFormData}
@@ -105,9 +110,36 @@ function AuthPage() {
                 />
               </CardContent>
             </Card>
+            {
+              alert && (
+                <Alert variant={success === true ? "default" : "destructive"}>
+                <AlertCircle className="h-4 w-4 flex items-center justify-center absolute bottom-0" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  {alertMsg}
+                </AlertDescription>
+              </Alert>
+              )
+            }
           </TabsContent>
         </Tabs>
       </div>
+      {
+        // <Alert>
+        //   <Terminal className="h-4 w-4" />
+        //   <AlertTitle>Heads up!</AlertTitle>
+        //   <AlertDescription>
+        //     You can add components to your app using the cli.
+        //   </AlertDescription>
+        // </Alert>
+        // <Alert variant="destructive">
+        //   <AlertCircle className="h-4 w-4" />
+        //   <AlertTitle>Error</AlertTitle>
+        //   <AlertDescription>
+        //     Your session has expired. Please log in again.
+        //   </AlertDescription>
+        // </Alert>
+      }
     </div>
   );
 }

@@ -15,7 +15,8 @@ import { StudentContext } from "@/context/student-context";
 import { createPaymentService, fetchStudentViewCourseDetailsService } from "@/services";
 import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 
 function StudentViewCourseDetailsPage() {
   const {
@@ -35,7 +36,10 @@ function StudentViewCourseDetailsPage() {
   const [approvalUrl, setApprovalUrl] = useState('');
 
   const { id } = useParams();
-  const location = useLocation();
+  // const location = useLocation();
+  const params = useParams();
+
+  const {open ,setOpen} = useState(false);
 
   async function fetchStudentViewCourseDetails() {
     const response = await fetchStudentViewCourseDetailsService(
@@ -75,14 +79,36 @@ function StudentViewCourseDetailsPage() {
       coursePricing: studentViewCourseDetails?.pricing,
     };
 
-    console.log(paymentPayload, "paymentPayload");
-    const response = await createPaymentService(paymentPayload);
+    // console.log(paymentPayload, "paymentPayload");
 
-    if(response.success){
-      sessionStorage.setItem('currentOrderId', JSON.stringyfy(response?.data?.orderId))
-      setApprovalUrl(response?.data?.approvalUrl)
+    const response = await createPaymentService(paymentPayload);
+    // window.open("https://github.com/BARNALIXD?tab=repositories", "_blank")
+
+    // console.log(response);
+    const {success} = response
+   
+    // if(success){
+    //   // sessionStorage.setItem('currentOrderId', JSON.stringyfy(response?.data?.orderId))
+    //   // setApprovalUrl(response?.data?.approvalUrl)
+    //   // params.set("redirect", "google")
+    //   setOpen(true)
+    //   console.log("bitch");
+    //    window.open("https://github.com/BARNALIXD?tab=repositories", "_blank")
+    // }
+    if(success) {
+      console.log(success);
+      window.open("https://www.sandbox.paypal.com", "_blank")
     }
   }
+
+  // useEffect(() => {
+  //  if ((params.get("redirect") === "google") && (open)) {
+  //   window.open("https://www.google.com", "_blank")
+  //  }
+   
+
+  // }, [open]);
+
 
   useEffect(() => {
     if (displayCurrentVideoFreePreview !== null) setShowFreePreviewDailog(true);
@@ -211,7 +237,7 @@ function StudentViewCourseDetailsPage() {
               </div>
               <div className="mb-4">
                 <span className="text-3xl font-bold">
-                  ${studentViewCourseDetails?.pricing}
+                ₹{studentViewCourseDetails?.pricing}
                 </span>
               </div>
               <Button onClick={handleCreatePayment} className="w-full">
