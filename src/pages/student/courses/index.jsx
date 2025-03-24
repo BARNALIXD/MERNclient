@@ -31,6 +31,7 @@ function createSearchParamsHelper(filterParams) {
   return queryParams.join("&");
 }
 
+
 function StudentViewCoursesPage() {
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState([]);
