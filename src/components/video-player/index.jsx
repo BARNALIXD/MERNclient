@@ -16,7 +16,7 @@ import { Slider } from "../ui/slider";
 function VideoPlayer({
   width = "100%",
   height = "100%",
-  url,
+  url, onProgressUpdate, progressData
   }) {
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
@@ -25,6 +25,7 @@ function VideoPlayer({
   const [seeking, setSeeking] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [showControls, setShowControls] = useState(true);
+
 
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
@@ -111,6 +112,15 @@ function VideoPlayer({
       document.removeEventListener("fullscreenchange", handleFullScreenChange);
     };
   }, []);
+
+  useEffect(()=> {
+   if (played === 1) {
+    onProgressUpdate({
+      ...progressData,
+      progressValue : played,
+    })
+   }
+  },[played])
   
 
   return (

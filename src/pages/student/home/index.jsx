@@ -3,6 +3,7 @@ import { courseCategories } from "@/config";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
 import {
+  checkCoursePurchaseInfoService,
   fetchStudentViewCourseListService,
 } from "@/services";
 import { useContext, useEffect } from "react";
