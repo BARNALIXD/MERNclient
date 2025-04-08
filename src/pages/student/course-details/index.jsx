@@ -12,11 +12,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import VideoPlayer from "@/components/video-player";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
-import { createPaymentService, fetchStudentViewCourseDetailsService } from "@/services";
+import {
+  checkCoursePurchaseInfoService,
+  createPaymentService,
+  fetchStudentViewCourseDetailsService,
+} from "@/services";
 import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
 
 function StudentViewCourseDetailsPage() {
   const {
@@ -33,15 +36,29 @@ function StudentViewCourseDetailsPage() {
   const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] =
     useState(null);
   const [showFreePreviewDailog, setShowFreePreviewDailog] = useState(false);
-  const [approvalUrl, setApprovalUrl] = useState('');
-
+  const [approvalUrl, setApprovalUrl] = useState("");
+  const navigate = useNavigate();
   const { id } = useParams();
   // const location = useLocation();
   const params = useParams();
 
-  const {open ,setOpen} = useState(false);
+  const { open, setOpen } = useState(false);
 
   async function fetchStudentViewCourseDetails() {
+    const checkCoursePurchaseInfoResponse =
+      await checkCoursePurchaseInfoService(
+        currentCourseDetailsId,
+        auth?.user._id
+      );
+
+    if (
+      checkCoursePurchaseInfoResponse?.success &&
+      checkCoursePurchaseInfoResponse?.data
+    ) {
+      navigate(`/course-progress/${currentCourseDetailsId}`);
+      return;
+    }
+
     const response = await fetchStudentViewCourseDetailsService(
       currentCourseDetailsId
     );
@@ -85,8 +102,8 @@ function StudentViewCourseDetailsPage() {
     // window.open("https://github.com/BARNALIXD?tab=repositories", "_blank")
 
     // console.log(response);
-    const {success} = response
-   
+    const { success } = response;
+
     // if(success){
     //   // sessionStorage.setItem('currentOrderId', JSON.stringyfy(response?.data?.orderId))
     //   // setApprovalUrl(response?.data?.approvalUrl)
@@ -95,9 +112,9 @@ function StudentViewCourseDetailsPage() {
     //   console.log("bitch");
     //    window.open("https://github.com/BARNALIXD?tab=repositories", "_blank")
     // }
-    if(success) {
+    if (success) {
       console.log(success);
-      window.open("https://www.sandbox.paypal.com", "_blank")
+      window.open("https://www.sandbox.paypal.com/signin", "_blank");
     }
   }
 
@@ -105,10 +122,8 @@ function StudentViewCourseDetailsPage() {
   //  if ((params.get("redirect") === "google") && (open)) {
   //   window.open("https://www.google.com", "_blank")
   //  }
-   
 
   // }, [open]);
-
 
   useEffect(() => {
     if (displayCurrentVideoFreePreview !== null) setShowFreePreviewDailog(true);
@@ -123,14 +138,23 @@ function StudentViewCourseDetailsPage() {
   }, [id]);
 
   // useEffect(() => {
-  //   if (!location.pathname.includes("courses/details"))
+  //   if (!location.pathname.includes("courses/details")) {
+  //     setCoursePurchaseId(null);
+  //   }
+  //   setStudentViewCourseDetails(null),
+  //   setCurrentCourseDetailsId(null),
+  // }, [location.pathname]);
+
+  // useEffect(() => {
+  //   if (!location.pathname.includes("course/details"))
   //     setStudentViewCourseDetails(null),
-  //     setCurrentCourseDetailsId(null);
+  //       setCurrentCourseDetailsId(null),
+  //       setCoursePurchaseId(null);
   // }, [location.pathname]);
 
   if (loadingState) return <Skeleton />;
 
-  if(approvalUrl !== ''){
+  if (approvalUrl !== "") {
     window.location.href = approvalUrl;
   }
 
@@ -237,7 +261,7 @@ function StudentViewCourseDetailsPage() {
               </div>
               <div className="mb-4">
                 <span className="text-3xl font-bold">
-                ₹{studentViewCourseDetails?.pricing}
+                  ₹{studentViewCourseDetails?.pricing}
                 </span>
               </div>
               <Button onClick={handleCreatePayment} className="w-full">
