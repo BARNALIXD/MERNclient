@@ -13,13 +13,12 @@ import VideoPlayer from "@/components/video-player";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
 import {
-  checkCoursePurchaseInfoService,
   createPaymentService,
-  fetchStudentViewCourseDetailsService,
+  fetchStudentViewCourseDetailsService
 } from "@/services";
 import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function StudentViewCourseDetailsPage() {
   const {
@@ -35,29 +34,26 @@ function StudentViewCourseDetailsPage() {
 
   const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] =
     useState(null);
-  const [showFreePreviewDailog, setShowFreePreviewDailog] = useState(false);
+  const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
   const [approvalUrl, setApprovalUrl] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  // const location = useLocation();
-  const params = useParams();
-
-  const { open, setOpen } = useState(false);
+  const location = useLocation();
 
   async function fetchStudentViewCourseDetails() {
-    const checkCoursePurchaseInfoResponse =
-      await checkCoursePurchaseInfoService(
-        currentCourseDetailsId,
-        auth?.user._id
-      );
+    // const checkCoursePurchaseInfoResponse =
+    //   await checkCoursePurchaseInfoService(
+    //     currentCourseDetailsId,
+    //     auth?.user._id
+    //   );
 
-    if (
-      checkCoursePurchaseInfoResponse?.success &&
-      checkCoursePurchaseInfoResponse?.data
-    ) {
-      navigate(`/course-progress/${currentCourseDetailsId}`);
-      return;
-    }
+    // if (
+    //   checkCoursePurchaseInfoResponse?.success &&
+    //   checkCoursePurchaseInfoResponse?.data
+    // ) {
+    //   navigate(`/course-progress/${currentCourseDetailsId}`);
+    //   return;
+    // }
 
     const response = await fetchStudentViewCourseDetailsService(
       currentCourseDetailsId
@@ -96,37 +92,20 @@ function StudentViewCourseDetailsPage() {
       coursePricing: studentViewCourseDetails?.pricing,
     };
 
-    // console.log(paymentPayload, "paymentPayload");
-
+    console.log(paymentPayload, "paymentPayload");
     const response = await createPaymentService(paymentPayload);
-    // window.open("https://github.com/BARNALIXD?tab=repositories", "_blank")
 
-    // console.log(response);
-    const { success } = response;
-
-    // if(success){
-    //   // sessionStorage.setItem('currentOrderId', JSON.stringyfy(response?.data?.orderId))
-    //   // setApprovalUrl(response?.data?.approvalUrl)
-    //   // params.set("redirect", "google")
-    //   setOpen(true)
-    //   console.log("bitch");
-    //    window.open("https://github.com/BARNALIXD?tab=repositories", "_blank")
-    // }
-    if (success) {
-      console.log(success);
-      window.open("https://www.sandbox.paypal.com/signin", "_blank");
+    if (response.success) {
+      sessionStorage.setItem(
+        "currentOrderId",
+        JSON.stringify(response?.data?.orderId)
+      );
+      setApprovalUrl(response?.data?.approveUrl);
     }
   }
 
-  // useEffect(() => {
-  //  if ((params.get("redirect") === "google") && (open)) {
-  //   window.open("https://www.google.com", "_blank")
-  //  }
-
-  // }, [open]);
-
   useEffect(() => {
-    if (displayCurrentVideoFreePreview !== null) setShowFreePreviewDailog(true);
+    if (displayCurrentVideoFreePreview !== null) setShowFreePreviewDialog(true);
   }, [displayCurrentVideoFreePreview]);
 
   useEffect(() => {
@@ -137,20 +116,12 @@ function StudentViewCourseDetailsPage() {
     if (id) setCurrentCourseDetailsId(id);
   }, [id]);
 
-  // useEffect(() => {
-  //   if (!location.pathname.includes("courses/details")) {
-  //     setCoursePurchaseId(null);
-  //   }
-  //   setStudentViewCourseDetails(null),
-  //   setCurrentCourseDetailsId(null),
-  // }, [location.pathname]);
-
-  // useEffect(() => {
-  //   if (!location.pathname.includes("course/details"))
-  //     setStudentViewCourseDetails(null),
-  //       setCurrentCourseDetailsId(null),
-  //       setCoursePurchaseId(null);
-  // }, [location.pathname]);
+  useEffect(() => {
+    if (!location.pathname.includes("course/details"))
+      setStudentViewCourseDetails(null),
+        setCurrentCourseDetailsId(null),
+        setCoursePurchaseId(null);
+  }, [location.pathname]);
 
   if (loadingState) return <Skeleton />;
 
@@ -261,7 +232,7 @@ function StudentViewCourseDetailsPage() {
               </div>
               <div className="mb-4">
                 <span className="text-3xl font-bold">
-                  ₹{studentViewCourseDetails?.pricing}
+                  ${studentViewCourseDetails?.pricing}
                 </span>
               </div>
               <Button onClick={handleCreatePayment} className="w-full">
@@ -272,9 +243,9 @@ function StudentViewCourseDetailsPage() {
         </aside>
       </div>
       <Dialog
-        open={showFreePreviewDailog}
+        open={showFreePreviewDialog}
         onOpenChange={() => {
-          setShowFreePreviewDailog(false);
+          setShowFreePreviewDialog(false);
           setDisplayCurrentVideoFreePreview(null);
         }}
       >

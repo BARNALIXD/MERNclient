@@ -3,6 +3,7 @@ import { initialSignInFormData, initialSignUpFormData } from "@/config";
 import { checkAuthService, loginService, registerService } from "@/services";
 import { createContext, useEffect, useState } from "react";
 
+
 export const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
@@ -17,6 +18,7 @@ export default function AuthProvider({ children }) {
   const [alert, setAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [success, setSuccess] = useState(false);
+
 
   async function handleRegisterUser(event) {
     event.preventDefault();
@@ -38,6 +40,8 @@ export default function AuthProvider({ children }) {
       }, 2000);
     }
   }
+
+
   async function handleLoginUser(event) {
     event.preventDefault();
     const data = await loginService(signInFormData);

@@ -7,7 +7,7 @@ function PaypalPaymentReturnPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const paymentId = params.get("paymentId");
-  const payerId = params.get("payerID");
+  const payerId = params.get("PayerID");
 
   useEffect(() => {
     if (paymentId && payerId) {

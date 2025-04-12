@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -101,6 +102,14 @@ function StudentViewCoursesPage() {
 
     console.log(response , "handleCourseNavigate");
   }
+
+
+
+
+
+ 
+  
+
 
   useEffect(() => {
     const buildQueryStringForFilters = createSearchParamsHelper(filters);
@@ -222,7 +231,7 @@ function StudentViewCoursesPage() {
                         } - ${courseItem?.level.toUpperCase()} Level`}
                       </p>
                       <p className="font-bold text-lg">
-                        ₹{courseItem?.pricing}
+                        ${courseItem?.pricing}
                       </p>
                     </div>
                   </CardContent>

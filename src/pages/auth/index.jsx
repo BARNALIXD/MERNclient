@@ -12,7 +12,7 @@ import { signInFormControls, signUpFormControls } from "@/config";
 import { AuthContext } from "@/context/auth-context";
 import { AlertCircle, GraduationCap } from "lucide-react";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 function AuthPage() {
   const [activeTab, setActiveTab] = useState("signin");
@@ -100,7 +100,6 @@ function AuthPage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <CommonForm
-
                   formControls={signUpFormControls}
                   buttonText={"Sign Up"}
                   formData={signUpFormData}
@@ -110,17 +109,13 @@ function AuthPage() {
                 />
               </CardContent>
             </Card>
-            {
-              alert && (
-                <Alert variant={success === true ? "default" : "destructive"}>
+            {alert && (
+              <Alert variant={success === true ? "default" : "destructive"}>
                 <AlertCircle className="h-4 w-4 flex items-center justify-center absolute bottom-0" />
                 <AlertTitle>Error</AlertTitle>
-                <AlertDescription>
-                  {alertMsg}
-                </AlertDescription>
+                <AlertDescription>{alertMsg}</AlertDescription>
               </Alert>
-              )
-            }
+            )}
           </TabsContent>
         </Tabs>
       </div>
