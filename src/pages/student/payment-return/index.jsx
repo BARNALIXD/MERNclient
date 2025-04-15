@@ -11,26 +11,24 @@ function PaypalPaymentReturnPage() {
 
   useEffect(() => {
     if (paymentId && payerId) {
-      async function capturePayement() {
-        const orderId = JSON.parse(sessionStorage.getItem("currentOrderID"));
+      async function capturePayment() {
+        const orderId = JSON.parse(sessionStorage.getItem("currentOrderId"));
 
         const response = await captureAndFinalizePaymentService(
           paymentId,
           payerId,
           orderId
         );
-       if (response?.success){
-         sessionStorage.removeItem("currentOrderID");
-         window.location.href = "/student-courses";
-         
-       }
 
+        if (response?.success) {
+          sessionStorage.removeItem("currentOrderId");
+          window.location.href = "/student-courses";
+        }
       }
 
-      capturePayement();
+      capturePayment();
     }
   }, [payerId, paymentId]);
-
 
   return (
     <Card>

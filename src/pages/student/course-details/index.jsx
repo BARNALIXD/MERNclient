@@ -13,8 +13,9 @@ import VideoPlayer from "@/components/video-player";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
 import {
+  checkCoursePurchaseInfoService,
   createPaymentService,
-  fetchStudentViewCourseDetailsService
+  fetchStudentViewCourseDetailsService,
 } from "@/services";
 import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
@@ -286,3 +287,6 @@ function StudentViewCourseDetailsPage() {
 }
 
 export default StudentViewCourseDetailsPage;
+
+
+

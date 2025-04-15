@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -38,7 +37,7 @@ function createSearchParamsHelper(filterParams) {
 
 function StudentViewCoursesPage() {
   const [sort, setSort] = useState("price-lowtohigh");
-  const [filters, setFilters] = useState([]);
+  const [filters, setFilters] = useState({});
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     studentViewCoursesList,
@@ -51,10 +50,11 @@ function StudentViewCoursesPage() {
 
   function handleFilterOnChange(getSectionId, getCurrentOption) {
     let cpyFilters = { ...filters };
-    const indexOfCurrentSection = Object.keys(cpyFilters).indexOf(getSectionId);
+    const indexOfCurrentSeection =
+      Object.keys(cpyFilters).indexOf(getSectionId);
 
-    console.log(indexOfCurrentSection, getSectionId);
-    if (indexOfCurrentSection === -1) {
+    console.log(indexOfCurrentSeection, getSectionId);
+    if (indexOfCurrentSeection === -1) {
       cpyFilters = {
         ...cpyFilters,
         [getSectionId]: [getCurrentOption.id],
@@ -70,6 +70,7 @@ function StudentViewCoursesPage() {
         cpyFilters[getSectionId].push(getCurrentOption.id);
       else cpyFilters[getSectionId].splice(indexOfCurrentOption, 1);
     }
+
     setFilters(cpyFilters);
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
@@ -99,17 +100,7 @@ function StudentViewCoursesPage() {
         navigate(`/course/details/${getCurrentCourseId}`);
       }
     }
-
-    console.log(response , "handleCourseNavigate");
   }
-
-
-
-
-
- 
-  
-
 
   useEffect(() => {
     const buildQueryStringForFilters = createSearchParamsHelper(filters);
@@ -136,25 +127,25 @@ function StudentViewCoursesPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4 ">All Courses</h1>
+      <h1 className="text-3xl font-bold mb-4">All Courses</h1>
       <div className="flex flex-col md:flex-row gap-4">
         <aside className="w-full md:w-64 space-y-4">
           <div>
-            {Object.keys(filterOptions).map((keyItem) => (
+            {Object.keys(filterOptions).map((ketItem) => (
               <div className="p-4 border-b">
-                <h3 className="font-bold mb-3">{keyItem.toUpperCase()}</h3>
+                <h3 className="font-bold mb-3">{ketItem.toUpperCase()}</h3>
                 <div className="grid gap-2 mt-2">
-                  {filterOptions[keyItem].map((option) => (
+                  {filterOptions[ketItem].map((option) => (
                     <Label className="flex font-medium items-center gap-3">
                       <Checkbox
                         checked={
                           filters &&
                           Object.keys(filters).length > 0 &&
-                          filters[keyItem] &&
-                          filters[keyItem].indexOf(option.id) > -1
+                          filters[ketItem] &&
+                          filters[ketItem].indexOf(option.id) > -1
                         }
                         onCheckedChange={() =>
-                          handleFilterOnChange(keyItem, option)
+                          handleFilterOnChange(ketItem, option)
                         }
                       />
                       {option.label}
@@ -195,7 +186,7 @@ function StudentViewCoursesPage() {
               </DropdownMenuContent>
             </DropdownMenu>
             <span className="text-sm text-black font-bold">
-              {studentViewCoursesList.length}
+              {studentViewCoursesList.length} Results
             </span>
           </div>
           <div className="space-y-4">
@@ -210,7 +201,7 @@ function StudentViewCoursesPage() {
                     <div className="w-48 h-32 flex-shrink-0">
                       <img
                         src={courseItem?.image}
-                        className="w-full h-full object-cover"
+                        className="w-ful h-full object-cover"
                       />
                     </div>
                     <div className="flex-1">
@@ -240,7 +231,7 @@ function StudentViewCoursesPage() {
             ) : loadingState ? (
               <Skeleton />
             ) : (
-              <h1 className="font-extrabold text-4xl">No courses found</h1>
+              <h1 className="font-extrabold text-4xl">No Courses Found</h1>
             )}
           </div>
         </main>
@@ -250,5 +241,3 @@ function StudentViewCoursesPage() {
 }
 
 export default StudentViewCoursesPage;
-
-

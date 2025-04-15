@@ -4,7 +4,9 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -120,7 +122,7 @@ function StudentViewCourseProgressPage() {
   return (
     <div className="flex flex-col h-screen bg-[#1c1d1f] text-white">
       {showConfetti && <Confetti />}
-<div className="flex items-center justify-between p-4 bg-[#1c1d1f] border-b border-gray-700">
+      <div className="flex items-center justify-between p-4 bg-[#1c1d1f] border-b border-gray-700">
         <div className="flex items-center space-x-4">
           <Button
             onClick={() => navigate("/student-courses")}
@@ -247,4 +249,3 @@ function StudentViewCourseProgressPage() {
 }
 
 export default StudentViewCourseProgressPage;
-
