@@ -11,13 +11,15 @@ function CommonForm({
 }) {
   return (
     <form onSubmit={handleSubmit}>
-      {/* render form controls here*/}
+      {/* render form controls here */}
       <FormControls
         formControls={formControls}
         formData={formData}
         setFormData={setFormData}
       />
-      <Button disabled={isButtonDisabled} type="submit" className="mt-5 w-full">{buttonText || "Submit"}</Button>
+      <Button disabled={isButtonDisabled} type="submit" className="mt-5 w-full">
+        {buttonText || "Submit"}
+      </Button>
     </form>
   );
 }

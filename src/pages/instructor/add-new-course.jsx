@@ -15,8 +15,10 @@ import {
   fetchInstructorCourseDetailsService,
   updateCourseByIdService,
 } from "@/services";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
+
 
 function AddNewCoursePage() {
   const {
@@ -30,7 +32,9 @@ function AddNewCoursePage() {
 
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const {duplicateData, setDuplicateData} = useState(false);
   const params = useParams();
+
 
   console.log(params);
 
@@ -45,9 +49,15 @@ function AddNewCoursePage() {
   function validateFormData() {
     for (const key in courseLandingFormData) {
       if (isEmpty(courseLandingFormData[key])) {
+        setDuplicateData(false)
+
         return false;
+      }else {
+        setDuplicateData(true)
       }
     }
+
+    validateFormData();
 
     let hasFreePreview = false;
 
@@ -69,6 +79,8 @@ function AddNewCoursePage() {
   }
 
   async function handleCreateCourse() {
+    console.log("creating course");
+  // setIsLoading(true)
     const courseFinalFormData = {
       instructorId: auth?.user?._id,
       instructorName: auth?.user?.userName,
@@ -78,6 +90,8 @@ function AddNewCoursePage() {
       curriculum: courseCurriculumFormData,
       isPublised: true,
     };
+
+    console.log("coursefinalformd", courseFinalFormData);
 
     const response =
       currentEditedCourseId !== null
@@ -95,6 +109,7 @@ function AddNewCoursePage() {
     }
 
     console.log(courseFinalFormData, "courseFinalFormData");
+    // setIsLoading(false)
   }
 
 
@@ -135,7 +150,8 @@ function AddNewCoursePage() {
       <div className="flex justify-between">
         <h1 className="text-3xl font-extrabold mb-5">Create a new course</h1>
         <Button
-          disabled={!validateFormData()}
+          // disabled={!validateFormData()}
+          disabled={duplicateData}
           className="text-sm tracking-wider font-bold px-8"
           onClick={handleCreateCourse}
         >
