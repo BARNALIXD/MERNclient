@@ -13,10 +13,10 @@ import VideoPlayer from "@/components/video-player";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
 import {
-  checkCoursePurchaseInfoService,
   createPaymentService,
-  fetchStudentViewCourseDetailsService,
+  fetchStudentViewCourseDetailsService
 } from "@/services";
+import Big from 'big.js';
 import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -75,6 +75,9 @@ function StudentViewCourseDetailsPage() {
   }
 
   async function handleCreatePayment() {
+    const inr = new Big(studentViewCourseDetails?.pricing);
+    const exchangeRate = new Big(0.012);
+    const usd = inr.times(exchangeRate).toFixed(2);
     const paymentPayload = {
       userId: auth?.user?._id,
       userName: auth?.user?.userName,
@@ -90,7 +93,7 @@ function StudentViewCourseDetailsPage() {
       courseImage: studentViewCourseDetails?.image,
       courseTitle: studentViewCourseDetails?.title,
       courseId: studentViewCourseDetails?._id,
-      coursePricing: studentViewCourseDetails?.pricing,
+      coursePricing: parseFloat(usd),
     };
 
     console.log(paymentPayload, "paymentPayload");
@@ -233,7 +236,7 @@ function StudentViewCourseDetailsPage() {
               </div>
               <div className="mb-4">
                 <span className="text-3xl font-bold">
-                  ${studentViewCourseDetails?.pricing}
+                ₹{studentViewCourseDetails?.pricing}
                 </span>
               </div>
               <Button onClick={handleCreatePayment} className="w-full">

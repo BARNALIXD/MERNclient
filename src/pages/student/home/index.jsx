@@ -59,6 +59,9 @@ function StudentHomePage() {
           <h1 className="text-4xl font-bold mb-4">Learning thet gets you</h1>
           <p className="text-xl">
             Skills for your present and your future. Get Started with US
+            Learning is the key to unlocking a world of opportunities, both now and in the future. With us, you gain the skills you need to succeed today and the foundation to thrive tomorrow. Whether you're starting your journey or looking to grow further, we’re here to support you every step of the way. Take the first step toward a brighter future — start learning with us today!
+            ✨ 
+
           </p>
         </div>
         <div className="lg:w-full mb-8 lg:mb-0">
